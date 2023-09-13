@@ -1,126 +1,142 @@
-import os
-from random import randint
 from time import sleep
-
-tabuleiro_jogador = []
-tabuleiro_pc = []
-tabuleiro_partida_jogador = []
-tabuleiro_partida_pc = []
-tamanho = 10
+from random import randint
+import os
+matriz_jogador = []
+print("Bem vindo ao jogo: Batalha Naval")
+nome = input("Digite seu nome para começar: ")
+tamanho = int(input("Digite o tamanho do tabuleiro [TAMANHO x TAMANHO]: "))
 for i in range(tamanho):
-    tabuleiro_jogador.append(['~'] * tamanho)
-    tabuleiro_pc.append(["~"] * tamanho)
-    tabuleiro_partida_jogador.append(['~'] * tamanho)
-    tabuleiro_partida_pc.append(["~"] * tamanho)
+    matriz_jogador.append(["~"] * tamanho)
 
-print(f"Bem Vindo ao batalha naval criado no Motiva!")
-nome = input("Digite seu nome para comecar: ")
-sleep(1)
 for i in range(tamanho):
-    print(f"Vamos posicionar os seus navios: ")
-    print("Atualmente o seu tabuleiro se encontra dessa forma: ")
-    for j in range(tamanho):
-        for k in range(tamanho):
-            if (tabuleiro_jogador[j][k] == "N"):
-
-                print(f"\033[34m{tabuleiro_jogador[j][k]}\033[m", end=' ')
-            else:
-                print(tabuleiro_jogador[j][k], end=' ')
-        print()
-    linha, coluna = map(int, input(f"Digite a linha e coluna que vai ficar o seu {i+1}° navio: ").split())
+    linha, coluna = map(int, input(f"Digite a coordenada do seu {i+1}° navio: [x y] ").split())
     linha -= 1
     coluna -= 1
-    if (linha >= 0 and linha <= tamanho and coluna >= 0 and coluna <= tamanho and tabuleiro_jogador[linha][coluna] != "N"):
-        tabuleiro_jogador[linha][coluna] = "N"
-        print("Barco inserido com sucesso")
+    if (linha >= 0 and linha < tamanho and coluna >= 0 and coluna < tamanho and matriz_jogador[linha][coluna] == "~"):
+        matriz_jogador[linha][coluna] = "N"
+        print("\033[32mNavio posicionado com sucesso\033[m")
     else:
         while True:
-            print("Por favor, coloque um valor entre 1 - 10 ou um valor que não foi digitado anteriormente")
-            linha, coluna = map(int, input(f"Digite a linha e coluna que vai ficar o seu {i+1}° navio: ").split())
-            linha -= 1 
+            print(f"Pfv coloque uma coordenada que está no intervalo mencionado [1 - {tamanho}] ou digite um valor que não foi colocado:  ")
+            linha, coluna = map(int, input(f"Digite a coordenada do seu {i+1}° navio: [x y] ").split())
+            linha -= 1
             coluna -= 1
-            if (linha >= 0 and linha <= tamanho and coluna >= 0 and coluna <= tamanho and tabuleiro_jogador[linha][coluna] != "N"):
-                print("Barco inserido com sucesso")
-                tabuleiro_jogador[linha][coluna] = "N"
+            if (linha >= 0 and linha < tamanho and coluna >= 0 and coluna < tamanho and matriz_jogador[linha][coluna] == "~"):
+                matriz_jogador[linha][coluna] = "N"
+                print("\033[32mNavio posicionado com sucesso\033[m")
                 break
     sleep(1)
-    print("Computador fazendo escolha...")
-    linha_pc = randint(0, tamanho-1)
-    coluna_pc = randint(0, tamanho-1)
-    while tabuleiro_pc[linha_pc][coluna_pc] == "N":
-        linha_pc = randint(0, tamanho-1)
-        coluna_pc = randint(0, tamanho-1)
-    tabuleiro_pc[linha_pc][coluna_pc] = 'N'
-
-vidas_jogador = vidas_pc = tamanho
-print("\033[31mQue comecem os jogos!\033[m")
-sleep(2)
-os.system('cls')
-while True:
-    if (vidas_pc == 0):
-        print(f"\033[32mParabéns!!!\nVocê venceu o jogo!\033[m")
-        break
-    if (vidas_jogador == 0):
-        print(f"\033[31mVocê perdeu :C\nO PC venceu o jogo!\033[m")
-        break
-    print(f"Vez do jogador: {nome}")
-    print("Atualmente o tabuleiro inimigo se encontra dessa forma: ")
+    os.system('cls')
+    
+    print(f"Como está o tabuleiro atualmente: ")
     for j in range(tamanho):
         for k in range(tamanho):
-            if (tabuleiro_partida_pc[j][k] == "X"):
-                print(f"\033[31m{tabuleiro_partida_pc[j][k]}\033[m", end=' ')
+            if (matriz_jogador[j][k] == "P"):
+                print("~",end=' ')
             else:
-                print(tabuleiro_partida_pc[j][k], end=' ')
+                print(matriz_jogador[j][k], end=' ')
         print()
-    linha, coluna = map(int, input(f"Digite a linha e coluna que você vai atacar: ").split())
+
+print(f"PC vai fazer a escolha: ")
+for i in range(6):
+    print(".", end=' ', flush=True)
+    sleep(0.5)
+print()
+
+for i in range(tamanho):
+    linha_pc = randint(0, tamanho-1)
+    coluna_pc = randint(0, tamanho-1)
+
+    if (matriz_jogador[linha_pc][coluna_pc] == "~"):
+        matriz_jogador[linha_pc][coluna_pc] = "P"
+    else:
+        while matriz_jogador[linha_pc][coluna_pc] != "~":
+            linha_pc = randint(1, tamanho-1)
+            coluna_pc = randint(1, tamanho-1)
+        matriz_jogador[linha_pc][coluna_pc] = "P"
+
+vida_pc = vida_jogador = tamanho
+os.system('cls')
+print("\033[31mQue os jogos começem!\033[m")
+sleep(2)
+jogadas = []
+while True:
+    if vida_pc == 0:
+        print("Você venceu!!!!")
+        break
+    if vida_jogador == 0:
+        print("Você perdeu :c")
+        break
+    print(f"Jogador da Vez: {nome}")
+    linha, coluna = map(int, input(f"Digite a coordenada do seu ataque: ").split())
     linha -= 1
     coluna -= 1
-    if (linha >= 0 and linha <= tamanho and coluna >= 0 and coluna <= tamanho):
-        if (tabuleiro_pc[linha][coluna] == "N"):
-            tabuleiro_partida_pc[linha][coluna] = "X"
-            vidas_pc -= 1
-            print("Você acertou um navio!")
-            print(f"O PC tem {vidas_pc} navios restantes")
+    if (linha >= 0 and linha < tamanho and coluna >= 0 and coluna < tamanho):
+        if matriz_jogador[linha][coluna] == "P":
+            vida_pc -= 1
+            matriz_jogador[linha][coluna] = "X"
+            print("Você acertou um navio inimigo :D")
+            print(f"O PC tem {vida_pc} vidas")
         else:
-            print("Você não acertou nenhum navio :c")
+            print("Você não achou nenhum navio inimigo")
     else:
         while True:
-            print("Por favor, coloque um valor entre 1 - 10")
-            linha, coluna = map(int, input(f"Digite a linha e coluna que vai ficar o seu {i+1}° navio: ").split())
-            linha -= 1 
+            linha, coluna = map(int, input(f"Digite a coordenada do seu ataque: ").split())
+            linha -= 1
             coluna -= 1
-            if (linha >= 0 and linha <= tamanho and coluna >= 0 and coluna <= tamanho):
-                if (tabuleiro_pc[linha][coluna] == "N"):
-                    tabuleiro_partida_pc[linha][coluna] = "X"
-                    print("\033[32mVocê acertou um navio!\033[m")
-                    vidas_pc -= 1
-                    print(f"O PC tem {vidas_pc} navios restantes")
+            if (linha >= 0 and linha < tamanho and coluna >= 0 and coluna < tamanho):
+                if matriz_jogador[linha][coluna] == "P":
+                    vida_pc -= 1
+                    matriz_jogador[linha][coluna] = "X"
+                    print("Você acertou um navio inimigo :D")
+                    print(f"O PC tem {vida_pc} vidas")
                 else:
-                    print("\033[31mVocê não acertou nenhum navio :c\033[m")
-    sleep(2)
+                    print("Você não achou nenhum navio inimigo")
+                break
+    sleep(1)
     os.system("cls")
-    print(f"Vez do Jogador: PC")
-    print(f"Atualmente o tabuleiro de {nome} se encontra dessa forma: ")
+    print("O tabuleiro se encontra dessa forma: ")
     for j in range(tamanho):
         for k in range(tamanho):
-            if (tabuleiro_partida_jogador[j][k] == "N"):
-                print(f"\033[34m{tabuleiro_partida_jogador[j][k]}\033[m", end=' ')
+            if (matriz_jogador[j][k] == "P" or matriz_jogador[j][k] == "N"):
+                print("~",end=' ')
             else:
-                print(tabuleiro_partida_jogador[j][k], end=' ')
+                if (matriz_jogador[j][k] == "X"):
+                    print(f"\033[32m{matriz_jogador[j][k]}\033[m", end=' ')
+                elif (matriz_jogador[j][k] == "Y"):
+                    print(f"\033[31m{matriz_jogador[j][k]}\033[m", end=' ')
+                else:
+                     print(matriz_jogador[j][k], end=' ')     
         print()
-    print("O PC está fazendo sua escolha...")
-    for i in range(5):
-        print(".", flush=True, end=' ')
-        sleep(0.5)
-    print()
-    linha_pc = randint(0, tamanho-1)
-    coluna_pc = randint(0, tamanho-1)
-    if tabuleiro_jogador[linha_pc][coluna_pc] == "N":
-        tabuleiro_partida_jogador[linha_pc][coluna_pc] = "X"
-        vidas_jogador -= 1
-        print("O PC encontrou um navio")
-        print(f"Vidas do jogador {nome}: {vidas_jogador}")
-    else:
-        print("O PC não achou um navio")
     sleep(2)
     os.system("cls")
+    if vida_pc == 0:
+        continue
+    print("Jogador da Vez: PC")
+    print("Digite a coordenada do seu ataque: ")
+    sleep(2)
+    linha_pc = randint(0, tamanho-1)
+    coluna_pc = randint(0, tamanho-1)
+    if (linha_pc, coluna_pc) in jogadas:
+        while True:
+            linha_pc = randint(0, tamanho-1)
+            coluna_pc = randint(0, tamanho-1)
+            if (linha_pc, coluna_pc) not in jogadas:
+                jogadas.append((linha_pc, coluna_pc))
+                break
+    print(linha_pc+1, end=' ', flush=True)
+    sleep(1)
+    print(coluna_pc+1, flush=True)
+    sleep(1)
+    if (matriz_jogador[linha_pc][coluna_pc] == "N"):
+        matriz_jogador[linha_pc][coluna_pc] = "Y"
+        vida_jogador -= 1
+        print("O PC achou um navio")
+        print(f"Quantidade de vidas do jogador {nome}: {vida_jogador}")
+    else:
+        print("O PC não achou um navio")
+    
+    sleep(1)
+    os.system("cls")
+    if vida_jogador == 0:
+        continue
