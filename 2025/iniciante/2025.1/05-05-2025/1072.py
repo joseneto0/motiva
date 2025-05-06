@@ -8,4 +8,4 @@ for i in range(n):
     else:
         contadorOut += 1
 print(f"{contadorIn} in")
-print(f"{contadorOut} out")
+print(f"{contadorIn} out")
