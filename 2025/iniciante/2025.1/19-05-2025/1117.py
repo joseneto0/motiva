@@ -1,13 +1,14 @@
-valores = []
-qntd_notas = 0
-while True:
-    notas = float(input())
-    if notas < 0 or notas > 10:
-        print('nota invalida')
+notasValidas = 0
+nota1 = nota2 = 0
+while notasValidas < 2:
+    nota = float(input())
+    if nota >= 0 and nota <= 10:
+        if nota1 == -1:
+            nota1 = nota
+        else:
+            nota2 = nota
+        notasValidas += 1
     else:
-        valores.append(notas)
-        qntd_notas += 1
-        if qntd_notas == 2:
-            break
-media = sum(valores) / 2
-print(f'media = {media:.2f}')
+        print("nota invalida")
+media = (nota1 + nota2) / 2
+print(f"media = {media:.2f}")
