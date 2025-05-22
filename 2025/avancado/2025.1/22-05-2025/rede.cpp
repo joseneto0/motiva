@@ -45,7 +45,6 @@ int main() {
     ios;
     int n, m;
     int t = 1;
-    vector<string> outputs;
 
     while (cin >> n >> m) {
         if (n == 0 && m == 0){
@@ -62,22 +61,16 @@ int main() {
             id[i] = i;
         }
         kruskal();
-        stringstream ss;
-        ss << "Teste " << t << "\n";
+        cout  << "Teste " << t << "\n";
         for (auto x: ans){
-            ss << x.first << " " << x.second << "\n";
+            cout << x.first << " " << x.second << "\n";
         }
-        ss << "\n";
-        outputs.push_back(ss.str());
+        cout << "\n";
         t++;
         adj.clear();
         ans.clear();
         id.clear();
         sz.clear();
-    }
-
-    for (const auto& out : outputs) {
-        cout << out;
     }
     return 0;
 }
