@@ -1,21 +1,24 @@
 from collections import deque
+
 while True:
     try:
         s = input()
         pilha = deque()
-        r = True
+        certo = True
         for i in s:
             if i == '(':
                 pilha.append(i)
             elif i == ')':
-                if len(pilha) == 0:
-                    r = False
-                    break
-                else:
+                if len(pilha) > 0:
                     pilha.pop()
-        if len(pilha) == 0 and r == True:
+                else:
+                    certo = False
+                    break
+        
+        if len(pilha) == 0 and certo:
             print('correct')
         else:
             print('incorrect')
+
     except EOFError:
         break

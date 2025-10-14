@@ -1,15 +1,15 @@
 from collections import deque
 
 n = int(input())
-for i in range(n):
+for _ in range(n):
     s = input()
-    d = deque()
-    cont = 0
+    pilha = deque()
+    ans = 0
     for i in s:
-        if (i == '<'):
-            d.append(i)
-        elif (i == '>'):
-            if (len(d) > 0):
-                cont+= 1
-                d.pop()
-    print(cont)
+        if i == '<':
+            pilha.append(i)
+        elif i == '>' and len(pilha) > 0:
+            pilha.pop()
+            ans += 1
+    
+    print(ans)
