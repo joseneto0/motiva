@@ -1,6 +1,11 @@
 dx = [1, 0, -1, 0]
 dy = [0, 1, 0, -1]
 
+def isValid(x, y, n, m, matriz, vis):
+    if x < 0 or x >= n or y < 0 or y >= m or matriz[x][y] == '#' or vis[x][y]:
+        return False
+    return True
+
 def dfs(x, y, n, m, matriz, vis):
     stack = [(x, y)]
     vis[x][y] = True
@@ -8,7 +13,7 @@ def dfs(x, y, n, m, matriz, vis):
         i, j = stack.pop()
         for d in range(4):
             ni, nj = i + dx[d], j + dy[d]
-            if 0 <= ni < n and 0 <= nj < m and not vis[ni][nj] and matriz[ni][nj] == '.':
+            if isValid(ni, nj, n, m, matriz, vis):
                 vis[ni][nj] = True
                 stack.append((ni, nj))
 
