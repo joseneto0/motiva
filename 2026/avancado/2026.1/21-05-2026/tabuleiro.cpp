@@ -1,0 +1,20 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+const int MOD = 1e9 + 7;
+
+int main() {
+    int n;
+    cin >> n;
+    vector<int> dp(n + 1, 0);
+    dp[0] = 1;
+    for (int i = 1; i <= n; i++) {
+        for (int dado = 1; dado <= 6; dado++) {
+            if (i - dado >= 0) {
+                dp[i] = (dp[i] + dp[i - dado]) % MOD;
+            }
+        }
+    }
+    cout << dp[n] << endl;
+    return 0;
+}
